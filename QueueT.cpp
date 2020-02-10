@@ -10,15 +10,19 @@ QueueT::QueueT(){
 }
 
 QueueT::QueueT(const QueueT & qu){
-	copyQueue(qu);		// helper method
+	copyQueue(qu);
 }
 
 QueueT::~QueueT(){
-
+	deleteQueue();
 }
 
 QueueT& QueueT::operator=(const QueueT & qu){
-	copyQueue(qu);		// helper method
+	if (this != &qu){
+		deleteQueue();
+		copyQueue(qu);	
+	}
+	return *this;
 }
 
 void QueueT::enqueue(int value){
@@ -48,7 +52,7 @@ int QueueT::dequeue(){
 }
 void QueueT::print(){
 	NodeT* temp = front;
-	while (front != nullptr){
+	while (temp != nullptr){
 		cout << temp->data << endl;
 		temp = temp->next;
 	}
@@ -60,31 +64,77 @@ bool QueueT::empty(){
 		return false;
 }
 int QueueT::size(){
-
+	NodeT* temp = front;
+	int n = 0;
+	while (temp != nullptr){
+		temp = temp->next;
+		n++;
+	}
+	return n;
 }
 void QueueT::concatenate(QueueT & qu, int n){
+	NodeT* nodePtr;
+	nodePtr = qu.front;
+	int i = 0;
 
+	if (n>qu.size())
+		throw std::out_of_range("number of elements to be concatenated is greater than the size of the qu parameter");
+
+	while( i < n && nodePtr != nullptr){
+		enqueue(nodePtr->data);
+		nodePtr = nodePtr->next;
+		qu.dequeue();
+		i++;
+	}
 }
 QueueT QueueT::merge(const QueueT& qu){
-
+	NodeT* callObj = front;
+	NodeT* param = qu.front;
+	QueueT mergeQ;
+	while(callObj != nullptr && param != nullptr){
+		mergeQ.enqueue(callObj->data);
+		mergeQ.enqueue(param->data);
+		callObj = callObj->next;
+		param=param->next;
+	}
+	if (callObj == nullptr){
+		while(param != nullptr){
+			mergeQ.enqueue(param->data);
+			param = param->next;
+		}
+	}
+	if (param == nullptr){
+		while(callObj != nullptr){
+			mergeQ.enqueue(callObj->data);
+			callObj = callObj->next;
+		}
+	}	
+	return mergeQ;
 }
-//add getFront
 void QueueT::copyQueue(const QueueT & qu){
 	front = nullptr;
 	back = nullptr;
 	NodeT* original = qu.front;
-	// copy front of queue
 	if (original != nullptr){
-		// copy front of queue
 		front = new NodeT(original->data);
 		original = original->next;
 		NodeT* copy = front;
-		// copy remaining nodes
 		while (original != nullptr){
 			NodeT* newNodeT = new NodeT(original->data);
 			copy->next = newNodeT;
 			copy = copy->next;
 			original=original->next;
 		}
+		back = copy;
 	}
+}
+
+void QueueT::deleteQueue(){
+	NodeT* temp = front;
+	while (front!=nullptr){
+		front = front->next;
+		delete front;
+	}
+	front = nullptr;
+	back = nullptr;
 }
