@@ -28,12 +28,15 @@ QueueT& QueueT::operator=(const QueueT & qu){
 void QueueT::enqueue(int value){
 	NodeT* newNode = new NodeT(value, NULL);
 	if (front == nullptr){
+		//NodeT* newNode = front;
 		front = newNode;
 		back = newNode;
+		delete newNode;
 	}
 	else{
 		back->next = newNode;
 		back = newNode;
+		delete newNode;
 	}
 }
 int QueueT::dequeue(){
@@ -42,11 +45,15 @@ int QueueT::dequeue(){
 	else{
 		if (front == back){
 			delete front;
+			delete back;
 			front = back = nullptr;
 		}
 		else{
-			NodeT* nodePtr = front;
+			NodeT* temp = front;
+			int result = temp->data;
 			front = front->next;
+			return result;
+			delete temp;
 		}
 	}
 }
@@ -131,10 +138,14 @@ void QueueT::copyQueue(const QueueT & qu){
 
 void QueueT::deleteQueue(){
 	NodeT* temp = front;
-	while (front!=nullptr){
-		front = front->next;
-		delete front;
+	while (temp!=nullptr){
+		temp = temp->next;
 	}
+	delete temp;
 	front = nullptr;
 	back = nullptr;
+}
+
+NodeT* QueueT::getFront(){
+	return front;
 }
