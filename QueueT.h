@@ -61,6 +61,7 @@ public:
 	// POST: creates deep copy of QueueT parameter
 	QueueT merge(const QueueT& qu);
 	//add getFront
+	NodeT* getFront();
 private:
 	NodeT* front;
 	NodeT* back;
