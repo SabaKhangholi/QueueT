@@ -4,20 +4,34 @@ using namespace std;
 
 int main(){
 	QueueT hi;
-	QueueT qu;
+	QueueT qu(hi);
+	QueueT q;
+	
 	hi.enqueue(5);
+
 	hi.enqueue(4);
-	hi.enqueue(4);
+	//hi.empty();
+	//hi.dequeue();
+	//hi.print();
+	//hi.enqueue(4);
+	//hi.dequeue();
+	//hi.dequeue();
+	//hi.dequeue();
+
+	//hi.dequeue();
 	
 	qu.enqueue(1);
-	qu.enqueue(2);
-	qu.enqueue(3);
+	//qu.enqueue(2);
+	qu.dequeue();
+	hi.print();
+	//cout<<"front"<<endl;
+	//cout<<qu.getFront()<<endl;
 	
 	//hi.enqueue(6);
 	
 	QueueT Q(qu.merge(hi));
 	//Q = qu.merge(hi);
-	Q.print();
+	//Q.print();
 	//Q(qu.merge(hi));
 	/*
 	qu.enqueue(5);
@@ -31,7 +45,7 @@ int main(){
 	//mergeQ.print();
 	//mergeQ.enqueue(3);
 
-//	q.concatenate(qu, 1);
+	q.concatenate(qu, 1);
 //	q.print();
 //	cout<<"qu"<<endl;
 //	qu.print();
